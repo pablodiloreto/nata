@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>aspnet-nata-88012917-50C9-4F54-B5E3-E7B1ABE0AA54</UserSecretsId>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>Description</Description>
+    <Copyright>MIT License</Copyright>
+    <PackageLicenseExpression>MIT LIcense</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pablodiloreto/nata</RepositoryUrl>
+    <PackageIconUrl></PackageIconUrl>
   </PropertyGroup>
 
 

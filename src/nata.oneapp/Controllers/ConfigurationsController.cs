@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace NATA.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ConfigurationsController : Controller
     {
         public IActionResult Index()
