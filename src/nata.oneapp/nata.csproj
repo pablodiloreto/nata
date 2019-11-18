@@ -6,10 +6,14 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Description</Description>
     <Copyright>MIT License</Copyright>
-    <PackageLicenseExpression>MIT LIcense</PackageLicenseExpression>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageLicenseExpression>https://opensource.org/licenses/MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://pablodiloreto.github.io/nata/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pablodiloreto/nata</RepositoryUrl>
     <PackageIconUrl></PackageIconUrl>
+    <Authors>Dafne Quijana, Natalia Juarez, Cesar Iglesias, Julian Arias, Pablo Di Loreto</Authors>
+    <Company>Individuals</Company>
+    <PackageId>nataoneapp</PackageId>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 

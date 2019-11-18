@@ -1,91 +1,91 @@
-﻿@model nata.Models.Tickets
+﻿@model nata.Models.TicketViewModel
 
 @{
     ViewData["Title"] = "Ticket Details";
     Layout = "_LayoutTickets";
 }
 
-<h3>Ticket details for Id <strong>@Html.DisplayFor(model => model.Id)</strong></h3>
+<h3>Ticket details for Id <strong>@Html.DisplayFor(model => model.Ticket.Id)</strong></h3>
 <p>View details about this Country.</p>
 
 <div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Ticket.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Ticket.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedTo)
+            @Html.DisplayNameFor(model => model.Ticket.AssignedTo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AssignedTo)
+            @Html.DisplayFor(model => model.AssignedToUsername)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Ticket.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Ticket.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateFrom)
+            @Html.DisplayNameFor(model => model.Ticket.DateFrom)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateFrom)
+            @Html.DisplayFor(model => model.Ticket.DateFrom)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EstimatedHours)
+            @Html.DisplayNameFor(model => model.Ticket.EstimatedHours)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EstimatedHours)
+            @Html.DisplayFor(model => model.Ticket.EstimatedHours)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
+            @Html.DisplayNameFor(model => model.Ticket.CreatedBy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
+            @Html.DisplayFor(model => model.CreatedByUsername)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
+            @Html.DisplayNameFor(model => model.Ticket.TicketPriority)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority)
+            @Html.DisplayFor(model => model.Ticket.TicketPriority)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Contact)
+            @Html.DisplayNameFor(model => model.Ticket.Contact)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Contact.Email)
+            @Html.DisplayFor(model => model.Ticket.Contact.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Contract)
+            @Html.DisplayNameFor(model => model.Ticket.Contract)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Contract.Name)
+            @Html.DisplayFor(model => model.Ticket.Contract.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketImpact)
+            @Html.DisplayNameFor(model => model.Ticket.TicketImpact)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TicketImpact.Name)
+            @Html.DisplayFor(model => model.Ticket.TicketImpact.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketType)
+            @Html.DisplayNameFor(model => model.Ticket.TicketType)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TicketType.Name)
+            @Html.DisplayFor(model => model.Ticket.TicketType.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketUrgency)
+            @Html.DisplayNameFor(model => model.Ticket.TicketUrgency)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TicketUrgency.Name)
+            @Html.DisplayFor(model => model.Ticket.TicketUrgency.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Ticket.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

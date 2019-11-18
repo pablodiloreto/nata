@@ -12,6 +12,7 @@
     [TicketImpactId]  INT            NOT NULL,
     [TicketUrgencyId] INT            NOT NULL,
     [TicketPriority]  TINYINT        NOT NULL,
+    [Status] BIT NOT NULL, 
     CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Tickets_AspNetUsers] FOREIGN KEY ([AssignedTo]) REFERENCES [dbo].[AspNetUsers] ([Id]),
     CONSTRAINT [FK_Tickets_Contacts] FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contacts] ([Id]),

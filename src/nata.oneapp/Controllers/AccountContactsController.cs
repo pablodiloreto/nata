@@ -12,7 +12,6 @@ using nata.Models;
 namespace nata.Views
 {
     [Authorize(Roles = "Admin,SuperUser,User")]
-
     public class AccountContactsController : Controller
     {
         private readonly NataDbContext _context;
