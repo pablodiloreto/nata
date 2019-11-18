@@ -170,22 +170,51 @@ namespace nata.Controllers
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var tickets = await _context.Tickets.FindAsync(id);
+            var tickets = await _context.Tickets
+                .Include(t => t.Contact)
+                .Include(t => t.Contract)
+                .Include(t => t.TicketImpact)
+                .Include(t => t.TicketType)
+                .Include(t => t.TicketUrgency)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (tickets == null)
             {
                 return NotFound();
             }
+
+            var assignetToUsername = await _userContext.Users
+                .FirstOrDefaultAsync(u => u.Id == tickets.AssignedTo);
+
+            var createdByUsername = await _userContext.Users
+                .FirstOrDefaultAsync(u => u.Id == tickets.CreatedBy);
+
+            var ticketViewModel = new TicketViewModel
+            {
+                Ticket = tickets,
+                AssignedToUsername = assignetToUsername.UserName,
+                CreatedByUsername = createdByUsername.UserName
+
+                //Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
+                //Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync()),
+                //Contracts = await contractsResults.ToListAsync()
+            };
+
             ViewData["ContactId"] = new SelectList(_context.Contacts, "Id", "Email", tickets.ContactId);
             ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Name", tickets.ContractId);
             ViewData["TicketImpactId"] = new SelectList(_context.TicketImpacts, "Id", "Name", tickets.TicketImpactId);
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", tickets.TicketTypeId);
             ViewData["TicketUrgencyId"] = new SelectList(_context.TicketUrgencies, "Id", "Name", tickets.TicketUrgencyId);
-            return View(tickets);
+            ViewData["AssignedTo"] = new SelectList(_userContext.Users, "Id", "Username", tickets.AssignedTo);
+            ViewData["CreatedBy"] = new SelectList(_userContext.Users, "Id", "Username", tickets.CreatedBy);
+
+            return View(ticketViewModel);
         }
 
         // POST: Tickets/Edit/5
