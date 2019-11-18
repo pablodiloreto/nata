@@ -1,0 +1,45 @@
+﻿@model nata.Models.Activities
+
+@{
+    ViewData["Title"] = "Delete Activity";
+    Layout = "_LayoutTickets";
+}
+
+<h3>Are you sure you want to delete the activity id <strong>@Html.DisplayFor(model => model.Id)</strong> from date <strong>@Html.DisplayFor(model => model.Date)</strong>?</h3>
+<p>Activity for user <strong>@Html.DisplayFor(model => model.UserId)</strong>. Please, confirm or cancel this action.</p>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Efforts)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Efforts)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.CreatedBy)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
