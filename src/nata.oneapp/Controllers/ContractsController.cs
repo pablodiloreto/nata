@@ -11,7 +11,7 @@ using nata.Models;
 
 namespace nata.Views
 {
-    [Authorize(Roles = "Admin,SuperUser")]
+    [Authorize(Roles = "Admin,SuperUser,User")]
     public class ContractsController : Controller
     {
         private readonly NataDbContext _context;
@@ -30,7 +30,6 @@ namespace nata.Views
             //return View(await nataDbContext.ToListAsync());
 
             IQueryable<bool> statusQuery = from a in _context.Contracts
-                                           orderby a.Account.Name
                                            select a.Status;
 
             IQueryable<string> clientsQuery = from a in _context.Contracts
@@ -93,6 +92,7 @@ namespace nata.Views
         }
 
         // GET: Contracts/Create
+        [Authorize(Roles = "Admin,SuperUser")]
         public IActionResult Create()
         {
             ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name");
@@ -105,6 +105,7 @@ namespace nata.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Create([Bind("Id,Name,AccountId,ContractTypeId,DateFrom,DateTo,Hours,Status")] Contracts contracts)
         {
             if (ModelState.IsValid)
@@ -119,6 +120,7 @@ namespace nata.Views
         }
 
         // GET: Contracts/Edit/5
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -141,6 +143,7 @@ namespace nata.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,AccountId,ContractTypeId,DateFrom,DateTo,Hours,Status")] Contracts contracts)
         {
             if (id != contracts.Id)
@@ -174,6 +177,7 @@ namespace nata.Views
         }
 
         // GET: Contracts/Delete/5
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,6 +200,7 @@ namespace nata.Views
         // POST: Contracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contracts = await _context.Contracts.FindAsync(id);

@@ -29,8 +29,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="AssignedTo" class="control-label"></label>
-                <input asp-for="AssignedTo" class="form-control" />
-                <span asp-validation-for="AssignedTo" class="text-danger"></span>
+                @*<input asp-for="AssignedTo" class="form-control" />*@
+                <select asp-for="AssignedTo" class="form-control" asp-items="ViewBag.AssignedTo"></select>
+                @*<span asp-validation-for="AssignedTo" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>

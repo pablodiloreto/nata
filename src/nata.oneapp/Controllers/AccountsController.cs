@@ -11,7 +11,7 @@ using nata.Models;
 
 namespace nata.Controllers
 {
-    [Authorize(Roles = "ADMIN, SUPERUSER")]
+    [Authorize(Roles = "Admin,SuperUser,User")]
     public class AccountsController : Controller
     {
         private readonly NataDbContext _context;
@@ -72,6 +72,7 @@ namespace nata.Controllers
         }
 
         // GET: Accounts/Create
+        [Authorize(Roles = "Admin,SuperUser")]
         public IActionResult Create()
         {
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
@@ -83,6 +84,7 @@ namespace nata.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,Phone,CountryId,Email,Status")] Accounts accounts)
         {
             if (ModelState.IsValid)
@@ -96,6 +98,7 @@ namespace nata.Controllers
         }
 
         // GET: Accounts/Edit/5
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,6 +120,7 @@ namespace nata.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,Phone,CountryId,Email,Status")] Accounts accounts)
         {
             if (id != accounts.Id)
@@ -149,6 +153,7 @@ namespace nata.Controllers
         }
 
         // GET: Accounts/Delete/5
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -170,6 +175,7 @@ namespace nata.Controllers
         // POST: Accounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,SuperUser")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var accounts = await _context.Accounts.FindAsync(id);
