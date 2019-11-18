@@ -25,8 +25,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AssignedTo" class="control-label"></label>
-                <input asp-for="AssignedTo" class="form-control" />
-                <span asp-validation-for="AssignedTo" class="text-danger"></span>
+                <select asp-for="AssignedTo" class="form-control" asp-items="ViewBag.AssignedTo"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -55,8 +54,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                <select asp-for="CreatedBy" class="form-control" asp-items="ViewBag.AssignedTo"></select>
             </div>
             <div class="form-group">
                 <label asp-for="TicketImpactId" class="control-label"></label>
