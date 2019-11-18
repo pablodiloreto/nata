@@ -1,0 +1,67 @@
+﻿@model nata.Models.AccountViewModel
+
+@{
+    ViewData["Title"] = "Accounts Index";
+    Layout = "_LayoutAccounts";
+}
+
+<h3>Accounts</h3>
+<p>Here you will find information about Accounts.</p>
+
+<br />
+
+<form asp-controller="Accounts" asp-action="Index" method="get">
+    <p>
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
+        Status:
+        <select asp-for="SearchStatus" asp-items="Model.Status">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Accounts) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

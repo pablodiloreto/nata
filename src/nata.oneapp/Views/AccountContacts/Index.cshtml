@@ -1,0 +1,44 @@
+﻿@model IEnumerable<nata.Models.AccountContacts>
+
+@{
+    ViewData["Title"] = "Relations Index";
+    Layout = "_LayoutAccounts";
+}
+
+<h3>Relations between Accounts and Contacts</h3>
+<p>Here you will find information about relations.</p>
+
+<br />
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contact.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { item.AccountId, item.ContactId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
