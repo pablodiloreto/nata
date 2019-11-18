@@ -1,0 +1,25 @@
+﻿@model nata.Models.TicketTypes
+
+@{
+    ViewData["Title"] = "Ticket Type Details";
+    Layout = "_LayoutConfigurations";
+}
+
+<h3>Ticket Type details for <strong>@Html.DisplayFor(model => model.Name)</strong></h3>
+<p>View details about this Country.</p>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
