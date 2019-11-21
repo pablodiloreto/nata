@@ -5,42 +5,72 @@
     Layout = "_LayoutTickets";
 }
 
-<h3>New <strong>Contact</strong></h3>
+<h3>New <strong>Activity</strong></h3>
 <p>Please, fill in the following information:</p>
 
+<br />
 <hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                    <label asp-for="Id" class="control-label"></label>
-                    <input asp-for="Id" class="form-control" />
-                    <span asp-validation-for="Id" class="text-danger"></span>
-                </div>*@
+
+
+        <form asp-controller="Activities" asp-action="Create" method="get">
             <div class="form-group">
                 <label asp-for="TicketId" class="control-label"></label>
-                <select asp-for="TicketId" class="form-control" asp-items="ViewBag.TicketId"></select>
+                <select asp-for="TicketId" class="form-control" asp-items="ViewBag.AccountId">
+                    <option value="">Please select</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Efforts" class="control-label"></label>
-                <input asp-for="Efforts" class="form-control" />
-                <span asp-validation-for="Efforts" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Select an Account to continue" />
             </div>
         </form>
+
+        @if (((SelectList)ViewData["TicketId"]).Count() > 0)
+        {
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @*<div class="form-group">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>*@
+                <div class="form-group">
+                    <label asp-for="TicketId" class="control-label"></label>
+                    <select asp-for="TicketId" class="form-control" asp-items="ViewBag.TicketId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date" class="control-label"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserId" class="control-label"></label>
+                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.AssignedTo"></select>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Details" class="control-label"></label>
+                    <textarea asp-for="Details" class="form-control"></textarea>
+                    <span asp-validation-for="Details" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Efforts" class="control-label"></label>
+                    <input asp-for="Efforts" class="form-control" />
+                    <span asp-validation-for="Efforts" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+
+        }
+        else
+        {
+            <p>Please select an Account that have an active Tickets.</p>
+        }
     </div>
 </div>
 

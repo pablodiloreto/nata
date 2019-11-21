@@ -11,7 +11,7 @@ using nata.Models;
 
 namespace nata.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperUser,User")]
     public class TicketUrgenciesController : Controller
     {
         private readonly NataDbContext _context;

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<nata.Models.Activities>
+﻿@model nata.Models.ActivitiesViewModel
 
 @{
     ViewData["Title"] = "Activities";
@@ -6,51 +6,78 @@
 }
 
 <h3>Activities</h3>
-<p>Here you will find information about Activities.</p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<hr />
+
+<form asp-controller="Activities" asp-action="Index" method="get">
+    <p>
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+
+        Client:
+        <select asp-for="SearchClient" asp-items="Model.Accounts">
+            <option value="">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
+
+        Assigned To:
+        <select asp-for="searchUserName" asp-items="Model.Users">
+            <option value="">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
+
+        Title: <input type="text" asp-for="SearchString" />&nbsp;&nbsp;&nbsp;
+
+        <input type="submit" value="Filter" />
+
+    </p>
+</form>
+
+<br />
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                Account
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Efforts)
+                Username
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ticket)
+                Title
+            </th>
+            <th>
+                Efforts
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Activities)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Efforts)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.CreatedBy)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Model.Activities.FirstOrDefault(t => t.Id == item.Id).Date.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticket.Contract.Account.Name)
+            </td>
+            <td>
+                @(Model.Users.FirstOrDefault(u => u.Value == item.UserId).Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Efforts)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

@@ -5,14 +5,21 @@
     Layout = "_LayoutAccounts";
 }
 
-<h3>Edit information for Activity Id <strong>@Html.DisplayFor(model => model.Id)</strong></h3>
+<h3>Activities | Edit <strong>@Html.DisplayFor(model => model.Id)</strong></h3>
 <p>Please, fill in the following information.</p>
+
+<br />
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Ticket.Contract.Account" class="control-label"></label>:
+                <strong>@Html.DisplayFor(model => model.Ticket.Contract.Account.Name)</strong>
+            </div>
             <div class="form-group">
                 <label asp-for="TicketId" class="control-label"></label>
                 <select asp-for="TicketId" class="form-control" asp-items="ViewBag.TicketId"></select>
@@ -27,6 +34,11 @@
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Efforts" class="control-label"></label>

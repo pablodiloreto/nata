@@ -23,11 +23,7 @@ namespace nata.Views
 
         // GET: Contracts
         public async Task<IActionResult> Index(string searchStatus, string searchClient, string searchString)
-        //public async Task<IActionResult> Index()
         {
-            //var contractsResults = _context.Contracts.Include(c => c.Client).Where(n => n.Name.Contains(searchString));
-
-            //return View(await nataDbContext.ToListAsync());
 
             IQueryable<bool> statusQuery = from a in _context.Contracts
                                            select a.Status;
@@ -36,32 +32,30 @@ namespace nata.Views
                                               orderby a.Account.Name
                                               select a.Account.Name;
 
-            //var contracts = from a in _context.Contracts
-            //                join v in _context.Accounts on a.ClientId equals v.Id
-            //               select a;
-
             var contractsResults = _context.Contracts.Include(a => a.Account).Include(ct => ct.ContractType).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                //contracts = contracts.Include(c => c.Client).Where(n => n.Name.Contains(searchString));
-                contractsResults = _context.Contracts.Include(a => a.Account).Include(ct => ct.ContractType).Where(n => n.Name.Contains(searchString));
+                contractsResults = contractsResults.Where(n => n.Name.Contains(searchString));
             }
 
             if (!string.IsNullOrEmpty(searchClient))
             {
-                contractsResults = _context.Contracts.Include(a => a.Account).Include(ct => ct.ContractType).Where(n => n.Account.Name.Equals(searchClient));
+                contractsResults = contractsResults.Where(n => n.Account.Name.Equals(searchClient));
             }
 
-            if (!string.IsNullOrEmpty(searchStatus))
+            if (!string.IsNullOrEmpty(searchStatus) && (searchStatus.ToString() != "all"))
             {
-                contractsResults = _context.Contracts.Include(a => a.Account).Include(ct => ct.ContractType).Where(s => s.Status == Convert.ToBoolean(searchStatus));
-
+                contractsResults = contractsResults.Where(s => s.Status == Convert.ToBoolean(searchStatus));
+            }
+            if (string.IsNullOrEmpty(searchStatus))
+            {
+                contractsResults = contractsResults.Where(s => s.Status == true);
             }
 
             var contractsViewModel = new ContractsViewModel
             {
-                Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
+                Status = new SelectList(await statusQuery.Distinct().ToListAsync(), bool.Parse("True")),
                 Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync()),
                 Contracts = await contractsResults.ToListAsync()
             };

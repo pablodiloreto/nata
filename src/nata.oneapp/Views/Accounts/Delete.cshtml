@@ -5,11 +5,12 @@
     Layout = "_LayoutAccounts";
 }
 
-<h3>Are you sure you want to delete the account named <strong>@Html.DisplayFor(model => model.Name)</strong>?</h3>
+<h3>Accounts | Delete <strong>@Html.DisplayFor(model => model.Name)</strong>?</h3>
 <p>Please, confirm or cancel this action.</p>
+<br />
+<hr />
 
 <div>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)

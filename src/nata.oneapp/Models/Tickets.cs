@@ -24,6 +24,7 @@ namespace nata.Models
         public int TicketUrgencyId { get; set; }
         public byte TicketPriority { get; set; }
         public bool Status { get; set; }
+
         public virtual Contacts Contact { get; set; }
         public virtual Contracts Contract { get; set; }
         public virtual TicketImpacts TicketImpact { get; set; }

@@ -24,62 +24,63 @@ namespace nata.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index(string searchStatus, string searchClient, string userName, string searchString)
+        public async Task<IActionResult> Index(string searchStatus, string searchClient, string searchUserName, string searchString, string searchPriority)
         {
-            //var nataDbContext = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency);
-            //return View(await nataDbContext.ToListAsync());
-
 
             IQueryable<bool> statusQuery = from a in _context.Tickets
+                                           orderby a.Status
                                            select a.Status;
 
-            IQueryable<string> clientsQuery = from a in _context.Accounts
-                                               orderby a.Name
-                                               select a.Name;
+            IQueryable<byte> priorityQuery = from a in _context.Tickets
+                                           orderby a.TicketPriority
+                                           select a.TicketPriority;
 
-            IQueryable<string> usersQuery = from a in _userContext.Users
-                                              orderby a.UserName
-                                              select a.UserName;
+            var clientsQuery = from a in _context.Accounts
+                                        orderby a.Name
+                                        select a;
 
-            IQueryable<string> searchQuery = from a in _context.Tickets
-                                              orderby a.Name
-                                              select a.Name;
+            var usersQuery = from a in _userContext.Users
+                                        orderby a.UserName
+                                        select a;
 
 
-            var ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).AsQueryable();
+            var ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).OrderBy(d => d.DateFrom).AsQueryable();
+
+
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                //contracts = contracts.Include(c => c.Client).Where(n => n.Name.Contains(searchString));
-                ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).Where(n => n.Name.Contains(searchString));
+                ticketsResults = ticketsResults.Where(n => n.Name.Contains(searchString));
             }
 
             if (!string.IsNullOrEmpty(searchClient))
             {
-                ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).Where(n => n.Contract.Account.Name.Equals(searchClient));
+                ticketsResults = ticketsResults.Where(c => c.Contract.Account.Id.Equals(Convert.ToInt32(searchClient)));
+            }
+
+            if (!string.IsNullOrEmpty(searchPriority))
+            {
+                ticketsResults = ticketsResults.Where(p => p.TicketPriority.Equals(Convert.ToByte(searchPriority)));
             }
 
             if (!string.IsNullOrEmpty(searchStatus))
             {
-                ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).Where(s => s.Status == Convert.ToBoolean(searchStatus));
-
+                ticketsResults = ticketsResults.Where(s => s.Status == Convert.ToBoolean(searchStatus));
             }
 
-
-            //var assignetToUsername = await _userContext.Users
-            //    .FirstOrDefaultAsync(u => u.Id == tickets.AssignedTo);
-
-            //var createdByUsername = await _userContext.Users
-            //    .FirstOrDefaultAsync(u => u.Id == tickets.CreatedBy);
+            if (!string.IsNullOrEmpty(searchUserName))
+            {
+                ticketsResults = ticketsResults.Where(u => u.AssignedTo.Equals(searchUserName));
+            }
 
             var ticketsViewModel = new TicketsViewModel
             {
                 Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
-                Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync()),
-                Users = new SelectList(await usersQuery.Distinct().ToListAsync()),
+                Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync(), "Id", "Name"),
+                Users = new SelectList(await usersQuery.Distinct().ToListAsync(), "Id", "UserName"),
+                Priority = new SelectList(await priorityQuery.Distinct().ToListAsync()),
                 Tickets = await ticketsResults.ToListAsync(),
-                //AssignedToUsername = assignetToUsername.UserName,
-                //CreatedByUsername = createdByUsername.UserName
             };
 
 
@@ -96,52 +97,66 @@ namespace nata.Controllers
                 return NotFound();
             }
 
-            var tickets = await _context.Tickets
+            var ticket= await _context.Tickets
                 .Include(t => t.Contact)
                 .Include(t => t.Contract)
+                .ThenInclude(t => t.Account)
                 .Include(t => t.TicketImpact)
                 .Include(t => t.TicketType)
                 .Include(t => t.TicketUrgency)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (tickets == null)
+            if (ticket == null)
             {
                 return NotFound();
             }
 
-            var assignetToUsername = await _userContext.Users
-                .FirstOrDefaultAsync(u => u.Id == tickets.AssignedTo);
+            var assignedToUsername = await _userContext.Users
+                .FirstOrDefaultAsync(u => u.Id == ticket.AssignedTo);
 
             var createdByUsername = await _userContext.Users
-                .FirstOrDefaultAsync(u => u.Id == tickets.CreatedBy);
+                .FirstOrDefaultAsync(u => u.Id == ticket.CreatedBy);
 
-            var ticketViewModel = new TicketViewModel
+            var ticketsViewModel = new TicketsViewModel
             {
-                Ticket = tickets,
-                AssignedToUsername = assignetToUsername.UserName,
-                CreatedByUsername = createdByUsername.UserName
-
-                //Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
-                //Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync()),
-                //Contracts = await contractsResults.ToListAsync()
+                Ticket = ticket,
+                AssignedToUserName = assignedToUsername.UserName,
+                CreatedByUserName = createdByUsername.UserName,
+                Account = ticket.Contract.Account.Name
             };
 
 
-            return View(ticketViewModel);
+            return View(ticketsViewModel);
         }
 
         // GET: Tickets/Create
-        public IActionResult Create()
+        public IActionResult Create(string? ContractId)
         {
 
-            var users = _userContext.Users.ToList();
+            //var users = _userContext.Users.ToList();
+            //var clients = _context.Accounts.ToList();
+
+            var contractsResults = _context.Contracts.Where(c => c.AccountId == 0).AsQueryable();
+
+            //var ticketViewModel = new TicketViewModel
+            //{
+            //    AccountId = AccountId
+            //};
+
+
+            if (!string.IsNullOrEmpty(ContractId))
+            {
+                contractsResults = _context.Contracts.Where(n => n.AccountId.Equals(Convert.ToInt32(ContractId)));
+            }
 
             ViewData["ContactId"] = new SelectList(_context.Contacts, "Id", "Email");
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Name");
+            ViewData["ContractId"] = new SelectList(contractsResults, "Id", "Name");
             ViewData["TicketImpactId"] = new SelectList(_context.TicketImpacts, "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
             ViewData["TicketUrgencyId"] = new SelectList(_context.TicketUrgencies, "Id", "Name");
             ViewData["AssignedTo"] = new SelectList(_userContext.Users, "Id", "UserName");
+            ViewData["CreatedBy"] = new SelectList(_userContext.Users.Where(u => u.UserName == User.Identity.Name), "Id", "UserName");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name", ContractId);
 
             return View();
         }
@@ -151,7 +166,7 @@ namespace nata.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ContractId,AssignedTo,Description,DateFrom,ContactId,TicketTypeId,EstimatedHours,CreatedBy,TicketImpactId,TicketUrgencyId,TicketPriority")] Tickets tickets)
+        public async Task<IActionResult> Create([Bind("Id,Name,ContractId,AssignedTo,Description,DateFrom,ContactId,TicketTypeId,EstimatedHours,CreatedBy,TicketImpactId,TicketUrgencyId,TicketPriority,Status")] Tickets tickets)
         {
             if (ModelState.IsValid)
             {
@@ -179,6 +194,7 @@ namespace nata.Controllers
             var tickets = await _context.Tickets
                 .Include(t => t.Contact)
                 .Include(t => t.Contract)
+                .ThenInclude(t => t.Account)
                 .Include(t => t.TicketImpact)
                 .Include(t => t.TicketType)
                 .Include(t => t.TicketUrgency)
@@ -189,32 +205,30 @@ namespace nata.Controllers
                 return NotFound();
             }
 
-            var assignetToUsername = await _userContext.Users
+            var assignedToUsername = await _userContext.Users
                 .FirstOrDefaultAsync(u => u.Id == tickets.AssignedTo);
 
             var createdByUsername = await _userContext.Users
                 .FirstOrDefaultAsync(u => u.Id == tickets.CreatedBy);
 
-            var ticketViewModel = new TicketViewModel
-            {
-                Ticket = tickets,
-                AssignedToUsername = assignetToUsername.UserName,
-                CreatedByUsername = createdByUsername.UserName
-
-                //Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
-                //Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync()),
-                //Contracts = await contractsResults.ToListAsync()
-            };
+            //var ticketViewModel = new TicketViewModel
+            //{
+            //    Ticket = tickets,
+            //    AssignedToUsername = assignedToUsername.UserName,
+            //    CreatedByUsername = createdByUsername.UserName
+            //};
 
             ViewData["ContactId"] = new SelectList(_context.Contacts, "Id", "Email", tickets.ContactId);
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Name", tickets.ContractId);
+            ViewData["ContractId"] = new SelectList(_context.Contracts.Where(c => c.AccountId == tickets.Contract.AccountId), "Id", "Name", tickets.ContractId);
             ViewData["TicketImpactId"] = new SelectList(_context.TicketImpacts, "Id", "Name", tickets.TicketImpactId);
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", tickets.TicketTypeId);
             ViewData["TicketUrgencyId"] = new SelectList(_context.TicketUrgencies, "Id", "Name", tickets.TicketUrgencyId);
-            ViewData["AssignedTo"] = new SelectList(_userContext.Users, "Id", "Username", tickets.AssignedTo);
-            ViewData["CreatedBy"] = new SelectList(_userContext.Users, "Id", "Username", tickets.CreatedBy);
+            ViewData["AssignedTo"] = new SelectList(_userContext.Users.ToList(), "Id", "UserName", tickets.AssignedTo);
+            ViewData["CreatedBy"] = new SelectList(_userContext.Users.ToList(), "Id", "UserName", tickets.CreatedBy);
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name", tickets.Contract.AccountId);
 
-            return View(ticketViewModel);
+            return View(tickets);
+
         }
 
         // POST: Tickets/Edit/5
@@ -222,7 +236,7 @@ namespace nata.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContractId,AssignedTo,Description,DateFrom,ContactId,TicketTypeId,EstimatedHours,CreatedBy,TicketImpactId,TicketUrgencyId,TicketPriority")] Tickets tickets)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContractId,AssignedTo,Description,DateFrom,ContactId,TicketTypeId,EstimatedHours,CreatedBy,TicketImpactId,TicketUrgencyId,TicketPriority,Status")] Tickets tickets)
         {
             if (id != tickets.Id)
             {
@@ -254,6 +268,8 @@ namespace nata.Controllers
             ViewData["TicketImpactId"] = new SelectList(_context.TicketImpacts, "Id", "Name", tickets.TicketImpactId);
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", tickets.TicketTypeId);
             ViewData["TicketUrgencyId"] = new SelectList(_context.TicketUrgencies, "Id", "Name", tickets.TicketUrgencyId);
+            ViewData["AssignedTo"] = new SelectList(_userContext.Users.ToList(), "Id", "UserName", tickets.AssignedTo);
+            ViewData["CreatedBy"] = new SelectList(_userContext.Users.ToList(), "Id", "UserName", tickets.CreatedBy);
             return View(tickets);
         }
 

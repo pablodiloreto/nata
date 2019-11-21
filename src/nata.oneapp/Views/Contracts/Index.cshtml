@@ -1,5 +1,4 @@
 ﻿@model nata.Models.ContractsViewModel
-@*@model IEnumerable<nata.Models.Contracts>*@
 
 
 @{
@@ -8,23 +7,22 @@
 }
 
 <h3>Contracts</h3>
-<p>Here you will find information about Contracts.</p>
 
-<br />
+<hr />
 
 <form asp-controller="Contracts" asp-action="Index" method="get">
     <p>
-        <a asp-action="Create">Create New</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 
         Status:
         <select asp-for="SearchStatus" asp-items="Model.Status">
-            <option value="">All</option>
-        </select>&nbsp;&nbsp;&nbsp;&nbsp;
+            <option value="all">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
 
         Cliente:
         <select asp-for="SearchClient" asp-items="Model.Accounts">
-            <option value="">All</option>
-        </select>&nbsp;&nbsp;&nbsp;&nbsp;
+            <option value="all">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
 
         Title: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Filter" />

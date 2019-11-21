@@ -26,10 +26,10 @@ namespace nata.Controllers
         {
 
             IQueryable<bool> accountsQuery = from a in _context.Accounts
-                                                    orderby a.Name
                                                     select a.Status;
 
             var accounts = from a in _context.Accounts
+                           .OrderBy(a => a.Name)
                            select a;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -37,14 +37,18 @@ namespace nata.Controllers
                 accounts = accounts.Where(n => n.Name.Contains(searchString));
             }
 
-            if (!string.IsNullOrEmpty(searchStatus))
+            if (!string.IsNullOrEmpty(searchStatus) && (searchStatus.ToString() != "all"))
             {
                 accounts = accounts.Where(s => s.Status == Convert.ToBoolean(searchStatus));
             }
-
-            var accountsViewModel = new AccountViewModel
+            if (string.IsNullOrEmpty(searchStatus))
             {
-                Status = new SelectList(await accountsQuery.Distinct().ToListAsync()),
+                accounts = accounts.Where(s => s.Status == true);
+            }
+
+            var accountsViewModel = new AccountsViewModel
+            {
+                Status = new SelectList(await accountsQuery.Distinct().ToListAsync(), bool.Parse("True")),
                 Accounts = await accounts.ToListAsync()
             };
 
