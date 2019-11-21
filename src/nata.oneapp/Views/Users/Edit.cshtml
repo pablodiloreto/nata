@@ -1,35 +1,32 @@
-﻿@model nata.Models.Contacts
+﻿@model IdentityUser
 
 @{
-    ViewData["Title"] = "Edit a Contact";
-    Layout = "_LayoutAccounts";
+    ViewData["Title"] = "Editing a User";
+    Layout = "_LayoutConfigurations";
 }
 
-<h3>Edit information for Contact named <strong>@Html.DisplayFor(model => model.Name)</strong></h3>
+<h3>Edit information for user <strong>@Model.UserName</strong></h3>
 <p>Please, fill in the following information.</p>
 
-<br />
 <hr />
-
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" disabled class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" disabled class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Password" class="control-label"></label>
+                <input name="Password" type="password" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

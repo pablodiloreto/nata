@@ -1,0 +1,29 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Create Role";
+    Layout = "_LayoutConfigurations";
+}
+
+<h3>New <strong>Role</strong></h3>
+<p>Please, fill in the following information:</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="Name" class="control-label"></label>
+                <input name="Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

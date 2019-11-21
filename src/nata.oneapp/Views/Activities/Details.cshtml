@@ -5,8 +5,11 @@
     Layout = "_LayoutTickets";
 }
 
-<h3>Activity details for <strong>@Html.DisplayFor(model => model.UserId)</strong></h3>
-<p>Activity Id <strong>@Html.DisplayFor(model => model.Id)</strong>.</p>
+<h3>Activities | Details for <strong>@Html.DisplayFor(model => model.Id)</strong></h3>
+<p>View details about this account.</p>
+
+<br />
+<hr />
 
 <div>
     <hr />
@@ -28,6 +31,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Details)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Efforts)

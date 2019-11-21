@@ -6,34 +6,68 @@
 }
 
 <h3>Ticket</h3>
-<p>Here you will find information about Ticket.</p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<hr />
+
+<form asp-controller="Tickets" asp-action="Index" method="get">
+    <p>
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+
+        Client:
+        <select asp-for="SearchClient" asp-items="Model.Accounts">
+            <option value="">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
+
+        Assigned To:
+        <select asp-for="SearchUsername" asp-items="Model.Users">
+            <option value="">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
+
+        Priority:
+        <select asp-for="SearchPriority" asp-items="Model.Priority">
+            <option value="">All</option>
+        </select>
+
+        <br />
+        <br />
+
+        Title: <input type="text" asp-for="SearchString" />&nbsp;&nbsp;&nbsp;
+
+        Status:
+        <select asp-for="SearchStatus" asp-items="Model.Status">
+            <option value="">All</option>
+        </select>&nbsp;&nbsp;&nbsp;
+
+        <input type="submit" value="Filter" />
+
+    </p>
+</form>
+
+<br />
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].Id)
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].Name)
+                Account
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].AssignedTo)
+                Ticket Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].DateFrom)
+               Assigned To
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].TicketPriority)
+                Date From
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].TicketType)
+                Priority
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets[0].TicketUrgency)
+                Type
             </th>
             <th></th>
         </tr>
@@ -46,22 +80,22 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Contract.Account.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AssignedTo)
+                @(Model.Users.FirstOrDefault(u => u.Value == item.AssignedTo).Text)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateFrom)
+                @(Model.Tickets.FirstOrDefault(t => t.Id == item.Id).DateFrom.ToShortDateString())
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketPriority)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketUrgency.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

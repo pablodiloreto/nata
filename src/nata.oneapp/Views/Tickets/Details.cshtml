@@ -1,27 +1,34 @@
-﻿@model nata.Models.TicketViewModel
+﻿@model nata.Models.TicketsViewModel
 
 @{
     ViewData["Title"] = "Ticket Details";
     Layout = "_LayoutTickets";
 }
 
-<h3>Ticket details for Id <strong>@Html.DisplayFor(model => model.Ticket.Id)</strong></h3>
-<p>View details about this Country.</p>
+<h3>Tickets | Details for <strong>@Html.DisplayFor(model => model.Ticket.Id)</strong></h3>
+
+<hr />
 
 <div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.Contract.Account)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.Contract.Account.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.Contract)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.Contract.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ticket.Name)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ticket.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.AssignedTo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AssignedToUsername)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ticket.Description)
@@ -36,40 +43,10 @@
             @Html.DisplayFor(model => model.Ticket.DateFrom)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.EstimatedHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ticket.EstimatedHours)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByUsername)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.TicketPriority)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ticket.TicketPriority)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ticket.Contact)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ticket.Contact.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.Contract)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ticket.Contract.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ticket.TicketImpact)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ticket.TicketImpact.Name)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ticket.TicketType)
@@ -78,10 +55,46 @@
             @Html.DisplayFor(model => model.Ticket.TicketType.Name)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.EstimatedHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.EstimatedHours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.AssignedTo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AssignedToUserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedByUserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.TicketPriority)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.TicketPriority)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.TicketImpact)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.TicketImpact.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ticket.TicketUrgency)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ticket.TicketUrgency.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.Status)
         </dd>
     </dl>
 </div>
