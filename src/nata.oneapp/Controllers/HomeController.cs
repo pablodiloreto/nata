@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using nata.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using nata.Data;
+using nata.Models;
 
 namespace nata.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly NataDbContext _nataDbContext;
+        private readonly NataDbContext _context;
+        private readonly ApplicationDbContext _userContext;
 
-        public HomeController(ILogger<HomeController> logger, NataDbContext nataDbContext)
+        public HomeController(NataDbContext context, ApplicationDbContext userContext)
         {
-            _logger = logger;
-            _nataDbContext = nataDbContext;
+            _context = context;
+            _userContext = userContext;
         }
 
         public IActionResult Index()
         {
-            var paises = _nataDbContext.Countries.ToList();
+
             return View();
+
         }
 
         public IActionResult About()
@@ -32,10 +34,10 @@ namespace nata.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

@@ -24,7 +24,7 @@ namespace nata.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index(string searchStatus, string searchClient, string searchUserName, string searchString, string searchPriority)
+        public async Task<IActionResult> Index(string searchStatus, string searchClient, string searchUserName, string searchString, string searchPriority, string fe)
         {
 
             IQueryable<bool> statusQuery = from a in _context.Tickets
@@ -64,19 +64,24 @@ namespace nata.Controllers
                 ticketsResults = ticketsResults.Where(p => p.TicketPriority.Equals(Convert.ToByte(searchPriority)));
             }
 
-            if (!string.IsNullOrEmpty(searchStatus))
+            if (!string.IsNullOrEmpty(searchStatus) && (searchStatus.ToString() != "all"))
             {
                 ticketsResults = ticketsResults.Where(s => s.Status == Convert.ToBoolean(searchStatus));
             }
 
-            if (!string.IsNullOrEmpty(searchUserName))
+            if (string.IsNullOrEmpty(searchStatus))
+            {
+                ticketsResults = ticketsResults.Where(s => s.Status == true);
+            }
+
+            if (!string.IsNullOrEmpty(searchUserName) && (searchUserName.ToString() != "all"))
             {
                 ticketsResults = ticketsResults.Where(u => u.AssignedTo.Equals(searchUserName));
             }
 
             var ticketsViewModel = new TicketsViewModel
             {
-                Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
+                Status = new SelectList(await statusQuery.Distinct().ToListAsync(), bool.Parse("True")),
                 Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync(), "Id", "Name"),
                 Users = new SelectList(await usersQuery.Distinct().ToListAsync(), "Id", "UserName"),
                 Priority = new SelectList(await priorityQuery.Distinct().ToListAsync()),
@@ -133,20 +138,13 @@ namespace nata.Controllers
         public IActionResult Create(string? ContractId)
         {
 
-            //var users = _userContext.Users.ToList();
-            //var clients = _context.Accounts.ToList();
 
             var contractsResults = _context.Contracts.Where(c => c.AccountId == 0).AsQueryable();
-
-            //var ticketViewModel = new TicketViewModel
-            //{
-            //    AccountId = AccountId
-            //};
 
 
             if (!string.IsNullOrEmpty(ContractId))
             {
-                contractsResults = _context.Contracts.Where(n => n.AccountId.Equals(Convert.ToInt32(ContractId)));
+                contractsResults = _context.Contracts.Where(n => n.AccountId.Equals(Convert.ToInt32(ContractId))).Where(s => s.Status.Equals(true));
             }
 
             ViewData["ContactId"] = new SelectList(_context.Contacts, "Id", "Email");

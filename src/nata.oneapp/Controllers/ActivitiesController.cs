@@ -98,7 +98,7 @@ namespace nata.Controllers
 
             if (!string.IsNullOrEmpty(TicketId))
             {
-                ticketsResults = _context.Tickets.Where(n => n.Contract.AccountId.Equals(Convert.ToInt32(TicketId)));
+                ticketsResults = _context.Tickets.Where(n => n.Contract.AccountId.Equals(Convert.ToInt32(TicketId))).Where(s => s.Status.Equals(true));
             }
 
             ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name", TicketId);

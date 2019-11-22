@@ -2,12 +2,15 @@
 
 @{
     ViewData["Title"] = "Editing a User";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
 <h3>Edit information for user <strong>@Model.UserName</strong></h3>
 <p>Please, fill in the following information.</p>
 
+<a asp-action="Index">Back to List</a>
+
+<br />
 <hr />
 <div class="row">
     <div class="col-md-4">

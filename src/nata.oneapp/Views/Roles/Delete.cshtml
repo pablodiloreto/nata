@@ -3,11 +3,15 @@
 
 @{
     ViewData["Title"] = "Delete a Role";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
 <h3>Are you sure you want to delete the Role named <strong>@Html.DisplayFor(model => model.Role.Name)</strong>?</h3>
 <p>Please, confirm or cancel this action.</p>
+<a asp-action="Index">Back to List</a>
+
+<br />
+<hr />
 
 <div>
     <hr />
