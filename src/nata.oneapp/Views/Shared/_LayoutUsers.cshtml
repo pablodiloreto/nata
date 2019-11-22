@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Users & Roles Manager</h2>
+
+<div>
+    <p>Welcome to the Users and Roles Manager for NATA.</p>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+            <partial name="_NavUsers" />
+        </div>
+        <div class="col-md-10">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@RenderSection("Scripts", required: false)
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

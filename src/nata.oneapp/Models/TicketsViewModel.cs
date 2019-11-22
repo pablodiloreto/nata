@@ -12,11 +12,15 @@ namespace nata.Models
         public SelectList Accounts { get; set; }
         public SelectList Status { get; set; }
         public SelectList Users { get; set; }
-        //public string AssignedToUsername { get; set; }
-        //public string CreatedByUsername { get; set; }
+        public SelectList Priority { get; set; }
+        public Tickets Ticket { get; set; }
         public string SearchStatus { get; set; }
         public string SearchClient { get; set; }
         public string SearchUsername { get; set; }
         public string SearchString { get; set; }
+        public string SearchPriority { get; set; }
+        public string AssignedToUserName { get; set; }
+        public string CreatedByUserName { get; set; }
+        public string Account { get; set; }
     }
 }

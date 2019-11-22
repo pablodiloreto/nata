@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace nata.Models
 {
-    public class AccountViewModel
+    public class AccountsViewModel
     {
         public List<Accounts> Accounts { get; set; }
         public SelectList Status  { get; set; }

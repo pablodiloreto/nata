@@ -18,6 +18,7 @@ namespace nata.Models
         public DateTime DateTo { get; set; }
         public short Hours { get; set; }
         public bool Status { get; set; }
+
         public virtual Accounts Account { get; set; }
         public virtual ContractTypes ContractType { get; set; }
         public virtual ICollection<Tickets> Tickets { get; set; }

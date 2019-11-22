@@ -15,17 +15,57 @@ namespace nata.Controllers
     public class ActivitiesController : Controller
     {
         private readonly NataDbContext _context;
+        private readonly ApplicationDbContext _userContext;
 
-        public ActivitiesController(NataDbContext context)
+        public ActivitiesController(NataDbContext context, ApplicationDbContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         // GET: Activities
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchClient, string searchUserName, string searchString)
         {
-            var nataDbContext = _context.Activities.Include(a => a.Ticket);
-            return View(await nataDbContext.ToListAsync());
+
+            var clientsQuery = from a in _context.Accounts
+                               orderby a.Name
+                               select a;
+
+            var usersQuery = from a in _userContext.Users
+                             orderby a.UserName
+                             select a;
+
+
+            var activitiesResults = _context.Activities.Include(t => t.Ticket).ThenInclude(t => t.Contract).ThenInclude(a => a.Account).OrderBy(d => d.Date).AsQueryable();
+
+
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                activitiesResults = activitiesResults.Where(n => n.Details.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(searchClient))
+            {
+                activitiesResults = activitiesResults.Where(c => c.Ticket.Contract.Account.Id.Equals(Convert.ToInt32(searchClient)));
+            }
+
+            if (!string.IsNullOrEmpty(searchUserName))
+            {
+                activitiesResults = activitiesResults.Where(u => u.UserId.Equals(searchUserName));
+            }
+
+            var activitiesViewModel = new ActivitiesViewModel
+            {
+                Accounts = new SelectList(await clientsQuery.Distinct().ToListAsync(), "Id", "Name"),
+                Users = new SelectList(await usersQuery.Distinct().ToListAsync(), "Id", "UserName"),
+                Activities = await activitiesResults.ToListAsync(),
+            };
+
+
+
+            return View(activitiesViewModel);
         }
 
         // GET: Activities/Details/5
@@ -48,9 +88,23 @@ namespace nata.Controllers
         }
 
         // GET: Activities/Create
-        public IActionResult Create()
+        public IActionResult Create(string? TicketId)
         {
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CreatedBy");
+
+            var ticketsResults = _context.Tickets.Where(c => c.Contract.AccountId == 0).AsQueryable();
+
+            //var userIdentity = _userContext.Users
+            //    .Where(u => u.UserName == User.Identity.Name).ToList();
+
+            if (!string.IsNullOrEmpty(TicketId))
+            {
+                ticketsResults = _context.Tickets.Where(n => n.Contract.AccountId.Equals(Convert.ToInt32(TicketId))).Where(s => s.Status.Equals(true));
+            }
+
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name", TicketId);
+            ViewData["TicketId"] = new SelectList(ticketsResults, "Id", "Name");
+            ViewData["AssignedTo"] = new SelectList(_userContext.Users, "Id", "UserName");
+
             return View();
         }
 
@@ -67,7 +121,7 @@ namespace nata.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CreatedBy", activities.TicketId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name", activities.TicketId);
             return View(activities);
         }
 
@@ -79,12 +133,17 @@ namespace nata.Controllers
                 return NotFound();
             }
 
-            var activities = await _context.Activities.FindAsync(id);
+            var activities = await _context.Activities
+                .Include(t => t.Ticket)
+                .ThenInclude(t => t.Contract)
+                .ThenInclude(t => t.Account)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (activities == null)
             {
                 return NotFound();
             }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CreatedBy", activities.TicketId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets.Where(t => t.Contract.AccountId == activities.Ticket.Contract.AccountId), "Id", "Name", activities.TicketId);
             return View(activities);
         }
 
@@ -120,7 +179,7 @@ namespace nata.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CreatedBy", activities.TicketId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name", activities.TicketId);
             return View(activities);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,5 +11,6 @@ namespace nata.Models
         public Tickets Ticket { get; set; }
         public string AssignedToUsername { get; set; }
         public string CreatedByUsername { get; set; }
+        public string AccountId { get; set; }
     }
 }

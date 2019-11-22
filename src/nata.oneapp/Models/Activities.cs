@@ -10,6 +10,7 @@ namespace nata.Models
         public DateTime Date { get; set; }
         public string UserId { get; set; }
         public decimal? Efforts { get; set; }
+        public string Details { get; set; }
 
         public virtual Tickets Ticket { get; set; }
     }
