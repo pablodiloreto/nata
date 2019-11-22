@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace nata.Models
 {
@@ -11,6 +12,8 @@ namespace nata.Models
         }
 
         public int Id { get; set; }
+        [Display(Name = "Country Name")]
+        [Required]
         public string Name { get; set; }
 
         public virtual ICollection<Accounts> Accounts { get; set; }
