@@ -44,7 +44,15 @@ namespace nata.Controllers
                                         select a;
 
 
-            var ticketsResults = _context.Tickets.Include(t => t.Contact).Include(t => t.Contract).Include(t => t.TicketImpact).Include(t => t.TicketType).Include(t => t.TicketUrgency).OrderBy(d => d.DateFrom).AsQueryable();
+            var ticketsResults = _context.Tickets
+                .Include(t => t.Contact)
+                .Include(t => t.Contract)
+                .ThenInclude(t => t.Account)
+                .Include(t => t.TicketImpact)
+                .Include(t => t.TicketType)
+                .Include(t => t.TicketUrgency)
+                .OrderBy(d => d.DateFrom)
+                .AsQueryable();
 
 
 
