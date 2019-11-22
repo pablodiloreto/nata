@@ -2,11 +2,15 @@
 
 @{
     ViewData["Title"] = "Role Details";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
 <h3>Role details for <strong>@Html.DisplayFor(model => model.Role.Name)</strong></h3>
 <p>Please, check the users that do you want add to this role.</p>
+
+<a asp-action="Index">Back to List</a>
+
+<br />
 <hr />
 
 <form method="post">

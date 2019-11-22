@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[LogsAuditSql]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [FromTable] VARCHAR(50) NOT NULL, 
+    [Action] VARCHAR(50) NOT NULL, 
+    [Result] NVARCHAR(MAX) NOT NULL, 
+    [DateTime] DATETIME NOT NULL DEFAULT GETDATE()
+)

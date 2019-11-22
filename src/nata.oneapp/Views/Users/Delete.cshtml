@@ -3,11 +3,16 @@
 
 @{
     ViewData["Title"] = "Delete a User";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
-<h3>Are you sure you want to delete the Ticket Impact named <strong>@Html.DisplayFor(model => model.UserName)</strong>?</h3>
+<h3>Users | Delete <strong>@Html.DisplayFor(model => model.UserName)</strong>?</h3>
 <p>Please, confirm or cancel this action.</p>
+
+<p><a asp-action="Index">Back to List</a></p>
+
+<br />
+<hr />
 
 <div>
     <hr />
@@ -26,6 +31,5 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
     </form>
 </div>

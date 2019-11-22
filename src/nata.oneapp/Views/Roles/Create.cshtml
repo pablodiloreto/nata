@@ -2,13 +2,17 @@
 
 @{
     ViewData["Title"] = "Create Role";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
 <h3>New <strong>Role</strong></h3>
 <p>Please, fill in the following information:</p>
 
+<a asp-action="Index">Back to List</a>
+
+<br />
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">

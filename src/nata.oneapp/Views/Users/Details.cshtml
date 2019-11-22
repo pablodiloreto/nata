@@ -2,14 +2,18 @@
 
 @{
     ViewData["Title"] = "User Details";
-    Layout = "_LayoutConfigurations";
+    Layout = "_LayoutUsers";
 }
 
-<h3>Ticket Impact details for <strong>@Html.DisplayFor(model => model.UserName)</strong></h3>
+<h3>Users | Details for <strong>@Html.DisplayFor(model => model.UserName)</strong></h3>
 <p>View details about this User.</p>
 
+<p><a asp-action="Index">Back to List</a></p>
+
+<br />
+<hr />
+
 <div>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -18,11 +22,10 @@
             @Html.DisplayFor(model => model.UserName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
